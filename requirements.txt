@@ -1,0 +1,4 @@
+pathlib
+python-crfsuite
+git+https://github.com/Koziev/rusyllab
+git+https://github.com/Koziev/ruword2tags

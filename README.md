@@ -8,8 +8,17 @@
 Наберите в консоли, возможно потребуется sudo:
 
 ```
-pip3 install git+https://github.com/Koziev/rupostagger
+pip install git+https://github.com/Koziev/rupostagger
 ```
+
+Для работы пакета необходимо установить [rusyllab](https://github.com/Koziev/rusyllab)
+и [ruword2tags](https://github.com/Koziev/ruword2tags), а также python-crfsuite. Для установки
+этих пакетов выполните:
+
+```
+pip install -r requirements.txt
+```
+
 
 # Использование
 
@@ -36,8 +45,3 @@ for word, label in tagger.tag(u'кошки спят'.split()):
 кошки -> NOUN|Case=Nom|Gender=Fem|Number=Plur
 спят -> VERB|Mood=Ind|Number=Plur|Person=3|Tense=Notpast|VerbForm=Fin|Voice=Act
 ```
-
-# Внешние зависимости
-
-Для работы пакета необходимо установить [rusyllab](https://github.com/Koziev/rusyllab)
-и [ruword2tags](https://github.com/Koziev/ruword2tags).
