@@ -12,8 +12,8 @@ pip install git+https://github.com/Koziev/rupostagger
 ```
 
 Для работы пакета необходимо установить [rusyllab](https://github.com/Koziev/rusyllab)
-и [ruword2tags](https://github.com/Koziev/ruword2tags), а также python-crfsuite. Для установки
-этих пакетов выполните:
+и [ruword2tags](https://github.com/Koziev/ruword2tags), а также [python-crfsuite](https://python-crfsuite.readthedocs.io/en/latest/).
+Для установки этих пакетов выполните:
 
 ```
 pip install -r requirements.txt
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 выполнить загрузку словарной базы и языковой модели вызовом метода load().
 Затем можно делать распознавание списка слов методом tag, который принимает
 список слов. Разбивку предложения на слова необходимо выполнять сторонними
-средствами заранее.
+средствами заранее, я для прототипирования NLP решений использую свой [пакет rutokenizer](https://github.com/Koziev/rutokenizer).
 
 Пример:
 
@@ -45,3 +45,7 @@ for word, label in tagger.tag(u'кошки спят'.split()):
 кошки -> NOUN|Case=Nom|Gender=Fem|Number=Plur
 спят -> VERB|Mood=Ind|Number=Plur|Person=3|Tense=Notpast|VerbForm=Fin|Voice=Act
 ```
+
+Для каждого слова возвращается строка, содержащая набор тегов, разделенных символом вертикальной черты. Первый
+тэг это всегда наименование части речи, остальные теги имеют формат название_тега=значение. Наименования частей
+речи и значения остальных тегов соответствуют соглашениям [Universal Dependencies](https://universaldependencies.org/).
