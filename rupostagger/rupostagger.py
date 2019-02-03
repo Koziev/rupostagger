@@ -71,8 +71,8 @@ class RuPosTagger(object):
             features.append((u'tag[{}]=punct_{}'.format(prefix, ord(word[0])), 1.0))
         else:
             uword = self.__normalize_word(word)
-            first_char = uword[0]
-            if first_char in 'abcdefghijklmnopqrstuvwxyz':
+            first_char = word[0]
+            if first_char in u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ':
                 features.append((u'word[{}]=<latin>'.format(prefix), 1.0))
             else:
                 if first_char in u'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ':
@@ -82,7 +82,7 @@ class RuPosTagger(object):
                     ending = '~' + uword[-self.ending_len:] if len(uword) > self.ending_len else uword
                     features.append((u'ending[{}]={}'.format(prefix, ending), 1.0))
 
-                if self.use_syllabs and first_char in u'абвгдеёжзийклмнопрстуфхцчшщъыьэюя':
+                if self.use_syllabs and first_char.lower() in u'абвгдеёжзийклмнопрстуфхцчшщъыьэюя':
                     syllabs = rusyllab.split_word(uword)
                     if len(syllabs) > 0:
                         if len(syllabs) == 1:
