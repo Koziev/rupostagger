@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-'''
-'''
+"""
+Модель частеречной разметки для русскочзычных текстов (проект https://github.com/Koziev/rupostagger)
+"""
 
 from __future__ import print_function
 from __future__ import division  # for python2 compatibility
@@ -33,7 +34,7 @@ class RuPosTagger(object):
         self.ending_len = -1
         self.word2tags = None
 
-    def load(self):
+    def load(self, word2tags_path=None):
         module_folder = str(pathlib.Path(__file__).resolve().parent)
         data_folder = os.path.join(module_folder, '../tmp')
         if not os.path.exists(data_folder):
@@ -49,7 +50,7 @@ class RuPosTagger(object):
             self.ending_len = self.config['ending_len']
 
         self.word2tags = ruword2tags.RuWord2Tags()
-        self.word2tags.load()
+        self.word2tags.load(word2tags_path)
 
         model_path = os.path.join(data_folder, 'rupostagger.model')
         self.tagger = pycrfsuite.Tagger()
@@ -139,9 +140,9 @@ def run_tests():
     tagger = RuPosTagger()
     tagger.load()
 
-    for phrase, required_labels in [(u'кошки спят', u'NOUN|Number=Plur|Case=Nom VERB|Mood=Ind|Number=Plur|Person=3|Tense=Notpast|VerbForm=Fin'),
-                                    (u'я рою колодец', u'PRON VERB NOUN|Number=Sing|Case=Acc'),
-                                    (u'я мою окно', u'PRON VERB NOUN|Number=Sing|Case=Acc'),
+    for phrase, required_labels in [(u'Кошки спят', u'NOUN|Number=Plur|Case=Nom VERB|Mood=Ind|Number=Plur|Person=3|Tense=Notpast|VerbForm=Fin'),
+                                    (u'Я рою колодец', u'PRON VERB NOUN|Number=Sing|Case=Acc'),
+                                    (u'Я мою окно', u'PRON VERB NOUN|Number=Sing|Case=Acc'),
                                     (u'Ира мыла окно', u'NOUN|Case=Nom VERB NOUN|Number=Sing|Case=Acc'),
                                     (u'Возьми мою пилу', u'VERB ADJ|Case=Acc NOUN|Case=Acc'),
                                     (u'рой колодец', u'VERB NOUN|Number=Sing|Case=Acc')]:
@@ -154,7 +155,4 @@ def run_tests():
 
 if __name__ == '__main__':
     run_tests()
-
-
-
 
