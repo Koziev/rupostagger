@@ -6,7 +6,7 @@ with io.open("README.md", mode="r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name="rupostagger",
-    version="0.0.8",
+    version="0.0.9",
     author="Ilya Koziev",
     author_email="inkoziev@gmail.com",
     description="Part-of-Speech Tagger for Russian language",
