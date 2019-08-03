@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Модель частеречной разметки для русскочзычных текстов (проект https://github.com/Koziev/rupostagger)
+03.08.2019 небольшой баг с нормализацией (замена "ё" на "е") перед поиском в грамматическом словаре
 """
 
 from __future__ import print_function
@@ -63,7 +64,6 @@ class RuPosTagger(object):
     def get_word_features(self, word, prefix):
         assert(len(word) > 0)
         features = []
-
         if word in token2tag:
             features.append((u'tag[{}]={}'.format(prefix, token2tag[word]), 1.0))
         elif is_num(word):
@@ -96,7 +96,7 @@ class RuPosTagger(object):
 
                 if self.use_gren:
                     tags = set()
-                    for tagset in self.word2tags[word.lower()]:
+                    for tagset in self.word2tags[uword]:
                         tags.update(tagset.split(' '))
 
                     for tag in tags:
@@ -145,7 +145,8 @@ def run_tests():
                                     (u'Я мою окно', u'PRON VERB NOUN|Number=Sing|Case=Acc'),
                                     (u'Ира мыла окно', u'NOUN|Case=Nom VERB NOUN|Number=Sing|Case=Acc'),
                                     (u'Возьми мою пилу', u'VERB ADJ|Case=Acc NOUN|Case=Acc'),
-                                    (u'рой колодец', u'VERB NOUN|Number=Sing|Case=Acc')]:
+                                    (u'рой колодец', u'VERB NOUN|Number=Sing|Case=Acc'),
+                                    (u'У меня живёт черепаха', u'ADP PRON VERB NOUN')]:
         if not test1(tagger, phrase, required_labels):
             print('Tests FAILED')
             return
