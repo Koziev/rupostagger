@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Модель частеречной разметки для русскоязычных текстов (проект https://github.com/Koziev/rupostagger)
+Модель частеречной разметки для русскочзычных текстов (проект https://github.com/Koziev/rupostagger)
 03.08.2019 небольшой баг с нормализацией (замена "ё" на "е") перед поиском в грамматическом словаре
 """
 
@@ -136,6 +136,7 @@ def test1(tagger, phrase, required_labels):
 
     return True
 
+
 def run_tests():
     tagger = RuPosTagger()
     tagger.load()
@@ -146,7 +147,9 @@ def run_tests():
                                     (u'Ира мыла окно', u'NOUN|Case=Nom VERB NOUN|Number=Sing|Case=Acc'),
                                     (u'Возьми мою пилу', u'VERB ADJ|Case=Acc NOUN|Case=Acc'),
                                     (u'рой колодец', u'VERB NOUN|Number=Sing|Case=Acc'),
-                                    (u'У меня живёт черепаха', u'ADP PRON VERB NOUN')]:
+                                    (u'У меня живёт черепаха', u'ADP PRON VERB NOUN'),
+                                    (u'какую еду ты любишь ?', u'ADJ NOUN PRON VERB PUNCT')
+                                    ]:
         if not test1(tagger, phrase, required_labels):
             print('Tests FAILED')
             return
