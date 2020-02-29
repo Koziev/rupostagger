@@ -6,7 +6,7 @@ import setuptools
 
 setuptools.setup(
     name="rupostagger",
-    version="0.0.40",
+    version="0.0.41",
     author="Ilya Koziev",
     author_email="inkoziev@gmail.com",
     description="Part-of-Speech Tagger for Russian language",
