@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Модель частеречной разметки для русскочзычных текстов (проект https://github.com/Koziev/rupostagger)
+Модель частеречной разметки для русскоязычных текстов (проект https://github.com/Koziev/rupostagger)
 03.08.2019 небольшой баг с нормализацией (замена "ё" на "е") перед поиском в грамматическом словаре
 """
 
@@ -38,12 +38,17 @@ class RuPosTagger(object):
     def load(self, word2tags_path=None):
         module_folder = str(pathlib.Path(__file__).resolve().parent)
         data_folder = os.path.join(module_folder, '../tmp')
-        if not os.path.exists(data_folder):
-            data_folder = module_folder
 
         config_path = os.path.join(data_folder, 'rupostagger.config')
-        with open(config_path, 'r') as wrt:
-            self.config = json.load(wrt)
+        if not os.path.exists(config_path):
+            data_folder = module_folder
+            config_path = os.path.join(data_folder, 'rupostagger.config')
+
+        #print('DEBUG@47 module_folder={}'.format(module_folder))
+        #print('DEBUG@48 data_folder={}'.format(data_folder))
+
+        with open(config_path, 'r') as rdr:
+            self.config = json.load(rdr)
             self.winspan = self.config['winspan']
             self.use_gren = self.config['use_gren']
             self.use_w2v = self.config['use_w2v']
@@ -111,18 +116,24 @@ class RuPosTagger(object):
             word_features = dict()
             for j in range(-self.winspan, self.winspan + 1):
                 iword2 = iword + j
-                if nb_words > iword2 >= 0:
+                if iword2 < 0:
+                    features = [('word[{}]=<beg>'.format(j), 1.0)]
+                elif iword2 >= nb_words:
+                    features = [('word[{}]=<end>'.format(j), 1.0)]
+                else:
                     features = self.get_word_features(words[iword2], str(j))
-                    word_features.update(features)
+                word_features.update(features)
 
             lines2.append(word_features)
 
         return lines2
 
     def tag(self, words):
-        X = self.vectorize_sample([BEG_TOKEN]+words+[END_TOKEN])
+        #X = self.vectorize_sample([BEG_TOKEN]+words+[END_TOKEN])
+        X = self.vectorize_sample(words)
         y_pred = self.tagger.tag(X)
-        return zip(words, y_pred[1: -1])
+        #return zip(words, y_pred[1: -1])
+        return zip(words, y_pred)
 
 
 def test1(tagger, phrase, required_labels):
