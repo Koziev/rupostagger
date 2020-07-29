@@ -33,7 +33,7 @@ pip install -r requirements.txt
 ```
 import rupostagger
 
-tagger = RuPosTagger()
+tagger = rupostagger.RuPosTagger()
 tagger.load()
 for word, label in tagger.tag(u'кошки спят'.split()):
 	print(u'{} -> {}'.format(word, label))
